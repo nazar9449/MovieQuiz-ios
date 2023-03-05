@@ -1,32 +1,28 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    
-    
-//    let currentQuestion = questions[currentQuestionIndex]
-
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 //        myNewLabel.text = "Nazik"
-        myNewLabel.font = UIFont(name:"YSDisplay-Medium", size:20)
-        questionLabel.font = UIFont(name:"YSDisplay-Bold", size:23)
-
-        
-
+//        myNewLabel.font = UIFont(name:"YSDisplay-Medium", size:20)
+//        questionLabel.font = UIFont(name:"YSDisplay-Bold", size:23)
 //        buttonYes.layer.cornerRadius = 15
 //        buttonYes.backgroundColor = .blue
 //        buttonYes.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
     }
-    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var buttonYes: UIButton!
-    @IBOutlet weak var myNewLabel: UILabel!
+    @IBOutlet weak var buttonNo: UIButton!
     
+    @IBOutlet weak var questionText: UILabel!
     @IBAction func noButtonClicked(_ sender: Any) {
     }
     @IBAction func yesButtonClicked(_ sender: Any) {
     }
-    @IBOutlet weak var label: UILabel!
+    
+    @IBOutlet weak var quesionIndex: UILabel!
+    
+    @IBOutlet weak var questionUp: UILabel!
 }
 
 // Для состояния "Вопрос задан"
@@ -87,61 +83,61 @@ private var currentQuestionIndex: Int = 0
 /*
  Mock-данные
  
- **1
+ 
  Картинка: The Godfather
  Настоящий рейтинг: 9,2
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
 
-2
+
  Картинка: The Dark Knight
  Настоящий рейтинг: 9
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
 
-3
+
  Картинка: Kill Bill
  Настоящий рейтинг: 8,1
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
 
-4
+
  Картинка: The Avengers
  Настоящий рейтинг: 8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
 
-5
+
  Картинка: Deadpool
  Настоящий рейтинг: 8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
 
-6
+
  Картинка: The Green Knight
  Настоящий рейтинг: 6,6
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: ДА
 
-7
+
  Картинка: Old
  Настоящий рейтинг: 5,8
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
 
-8
+
  Картинка: The Ice Age Adventures of Buck Wild
  Настоящий рейтинг: 4,3
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
 
-9
+
  Картинка: Tesla
  Настоящий рейтинг: 5,1
  Вопрос: Рейтинг этого фильма больше чем 6?
  Ответ: НЕТ
 
-10
+
  Картинка: Vivarium
  Настоящий рейтинг: 5,8
  Вопрос: Рейтинг этого фильма больше чем 6?

@@ -116,11 +116,11 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="label" destination="Zm0-V0-trF" id="2y7-nK-YwD"/>
-                        <outlet property="myNewLabel" destination="TAt-il-aIN" id="CR0-iO-Gc7"/>
-                        <outlet property="questionLabel" destination="Zm0-V0-trF" id="wyY-Rh-lyp"/>
-                        <outlet property="questionText" destination="Zm0-V0-trF" id="D44-Bi-i98"/>
-                        <outlet property="quizImage" destination="CO9-bL-d2Y" id="iUr-aw-6hC"/>
+                        <outlet property="buttonNo" destination="KPS-G1-HqA" id="5h8-Hs-Pqf"/>
+                        <outlet property="buttonYes" destination="Qtt-xQ-UbV" id="10m-ce-mHv"/>
+                        <outlet property="quesionIndex" destination="NT3-dw-XfF" id="1OM-gb-8ml"/>
+                        <outlet property="questionText" destination="Zm0-V0-trF" id="RWh-7W-2Dk"/>
+                        <outlet property="questionUp" destination="TAt-il-aIN" id="2Zf-kg-l6k"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
