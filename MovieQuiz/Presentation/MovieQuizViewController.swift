@@ -11,18 +11,9 @@ final class MovieQuizViewController: UIViewController {
 //        buttonYes.backgroundColor = .blue
 //        buttonYes.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
     }
-    @IBOutlet weak var buttonYes: UIButton!
-    @IBOutlet weak var buttonNo: UIButton!
+
     
-    @IBOutlet weak var questionText: UILabel!
-    @IBAction func noButtonClicked(_ sender: Any) {
-    }
-    @IBAction func yesButtonClicked(_ sender: Any) {
-    }
     
-    @IBOutlet weak var quesionIndex: UILabel!
-    
-    @IBOutlet weak var questionUp: UILabel!
 }
 
 // Для состояния "Вопрос задан"
