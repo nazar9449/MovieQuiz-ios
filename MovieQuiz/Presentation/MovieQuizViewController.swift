@@ -2,8 +2,22 @@ import UIKit
 
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let currentQuestion = questions[currentQuestionIndex]
+//        let convertedQuestion = convert(model: currentQuestion)
+//        show (show: QuizStepViewModel(image: convertedQuestion.image, question: convertedQuestion.question, questionNumber: convertedQuestion.questionNumber))
+//
+        
+        let viewModel: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
+        show(quiz: viewModel)
+        
 //        myNewLabel.text = "Nazik"
 //        myNewLabel.font = UIFont(name:"YSDisplay-Medium", size:20)
 //        questionLabel.font = UIFont(name:"YSDisplay-Bold", size:23)
@@ -44,11 +58,19 @@ final class MovieQuizViewController: UIViewController {
     }
     
     private func show(show result: QuizResultsViewModel) {
-        // something. result of the quiz
+//smth
     }
 
-    private func show(show step: QuizStepViewModel) {
-        // something. filling image, index and question
+//    private func show(show step: QuizStepViewModel) {
+//        // something. filling image, index and question
+//    }
+    
+    private func show(quiz step: QuizStepViewModel) {
+        imageView.image = step.image
+        textLabel.text = step.question
+        counterLabel.text = step.questionNumber
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -56,8 +78,25 @@ final class MovieQuizViewController: UIViewController {
                                  question: model.question,
                                  questionNumber: "\(currentQuestionIndex + 1)/\(questions.count) ")
       }
+    
+    private func showAnswerResult(isCorrect: Bool) {
+        if isCorrect == true {
+            print("Jan, answer is correct")
+            currentQuestionIndex += 1
+            let viewModel: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
+            show(quiz: viewModel)
+            
+        }
+        else {
+            print("Jan, answer is incorrect")
+            currentQuestionIndex += 1
+            let viewModel: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
+            show(quiz: viewModel)
 
-    private let questions: [QuizQuestion] = [QuizQuestion(image: "The Godfather", question: "Рейтинг этого                                              фильма больше чем 6?", correctAnswer: true),
+        }
+    }
+
+    private let questions: [QuizQuestion] = [QuizQuestion(image: "The Godfather", question: "Рейтинг этого                                              фильма больше чем 9?", correctAnswer: true),
                                              QuizQuestion(image: "The Dark Knight", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
                                              QuizQuestion(image: "Kill Bill", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
                                              QuizQuestion(image: "Avengers", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
@@ -69,12 +108,20 @@ final class MovieQuizViewController: UIViewController {
                                              QuizQuestion(image: "Vivarium", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)]
 
     private var currentQuestionIndex: Int = 0
+    
+
 
 
     @IBAction private func noButtonClicked(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let answerGiven = false
+        showAnswerResult(isCorrect: answerGiven == currentQuestion.correctAnswer)
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
+        let currentQuestion = questions[currentQuestionIndex]
+        let answerGiven = true
+        showAnswerResult(isCorrect: answerGiven == currentQuestion.correctAnswer)
     }
     
     @IBOutlet private var imageView: UIImageView!
@@ -83,7 +130,9 @@ final class MovieQuizViewController: UIViewController {
     
     @IBOutlet private var textLabel: UILabel!
     
+    @IBOutlet weak var noButton: UIButton!
     
+    @IBOutlet weak var yesButton: UIButton!
     
     /*
      Mock-данные
