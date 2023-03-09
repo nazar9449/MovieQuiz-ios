@@ -3,7 +3,7 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     // MARK: - Lifecycle
     
-    private let questions: [QuizQuestion] = [QuizQuestion(image: "The Godfather", question: "Рейтинг этого                                              фильма больше чем 9?", correctAnswer: true),
+    private let questions: [QuizQuestion] = [QuizQuestion(image: "The Godfather", question: "Рейтинг этого                                              фильма больше чем 6?", correctAnswer: true),
                                              QuizQuestion(image: "The Dark Knight", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
                                              QuizQuestion(image: "Kill Bill", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
                                              QuizQuestion(image: "Avengers", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
@@ -57,7 +57,7 @@ final class MovieQuizViewController: UIViewController {
       }
     
     private func showAnswerResult(isCorrect: Bool) {
-            print("Jan, you've answered")
+//            print("Jan, you've answered")
         
         if isCorrect {
             correctAnswers += 1
@@ -125,7 +125,8 @@ final class MovieQuizViewController: UIViewController {
         textLabel.font = UIFont(name:"YSDisplay-Bold", size:23)
 //        buttonYes.layer.cornerRadius = 15
 //        buttonYes.backgroundColor = .blue
-//        buttonYes.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
+        yesButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
+        noButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
         questionTitle.font = UIFont(name: "YSDisplay-Medium", size: 20)
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
     }
