@@ -58,19 +58,22 @@ final class MovieQuizViewController: UIViewController {
     
     private func showAnswerResult(isCorrect: Bool) {
 //            print("Jan, you've answered")
-        
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         if isCorrect {
             correctAnswers += 1
         }
 //            currentQuestionIndex += 1
         let _: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
             imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-            imageView.layer.borderWidth = 2 // толщина рамки
+            imageView.layer.borderWidth = 8 // толщина рамки
             imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
-            imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
+            imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // запускаем задачу через 1 секунду
             // код, который вы хотите вызвать через 1 секунду,
             // в нашем случае это просто функция
+                self.yesButton.isEnabled = true
+                self.noButton.isEnabled = true
                 self.showNextQuestionOrResults()
         }
 //            showNextQuestionOrResults()
@@ -94,6 +97,8 @@ final class MovieQuizViewController: UIViewController {
         }
         else {
             currentQuestionIndex += 1
+            imageView.layer.borderWidth = 0 // толщина рамки
+
             let viewModel: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
             show(quiz: viewModel)
         }
@@ -166,12 +171,14 @@ final class MovieQuizViewController: UIViewController {
     @IBAction private func noButtonClicked(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
         let answerGiven = false
+//        print("button yes pressed, counter = \(currentQuestionIndex), correct answers = \(correctAnswers)")
         showAnswerResult(isCorrect: answerGiven == currentQuestion.correctAnswer)
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
         let currentQuestion = questions[currentQuestionIndex]
         let answerGiven = true
+//        print("button yes pressed, counter = \(currentQuestionIndex), correct answers = \(correctAnswers)")
         if currentQuestion.correctAnswer == true {
             
 //            print("you answered right. your correctAnswered counter is now \(correctAnswers)")
@@ -179,17 +186,17 @@ final class MovieQuizViewController: UIViewController {
         showAnswerResult(isCorrect: answerGiven == currentQuestion.correctAnswer)
     }
     
-    @IBOutlet private var imageView: UIImageView!
+    @IBOutlet private weak var imageView: UIImageView!
     
-    @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private weak var counterLabel: UILabel!
     
-    @IBOutlet private var textLabel: UILabel!
+    @IBOutlet private weak var textLabel: UILabel!
     
-    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
     
-    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     
-    @IBOutlet weak var questionTitle: UILabel!
+    @IBOutlet private weak var questionTitle: UILabel!
     
 }
 
