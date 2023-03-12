@@ -1,21 +1,11 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-    // MARK: - Lifecycle
     
-    private let questions: [QuizQuestion] = [QuizQuestion(image: "The Godfather", question: "Рейтинг этого                                              фильма больше чем 6?", correctAnswer: true),
-                                             QuizQuestion(image: "The Dark Knight", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-                                             QuizQuestion(image: "Kill Bill", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-                                             QuizQuestion(image: "Avengers", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-                                             QuizQuestion(image: "Deadpool", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-                                             QuizQuestion(image: "The Green Knight", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: true),
-                                             QuizQuestion(image: "Old", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-                                             QuizQuestion(image: "The Ice Age Adventures of Buck Wild", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-                                             QuizQuestion(image: "Tesla", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: false),
-                                             QuizQuestion(image: "Vivarium", question: "Рейтинг этого фильма больше чем 6?", correctAnswer: false)]
-
+    private let questionsAmount: Int = 10
+    private let questionFactory: QuestionFactory = QuestionFactory()
+    private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex: Int = 0
-    
     private var correctAnswers: Int = 0
     
     private func show(quiz result: QuizResultsViewModel) {
@@ -29,9 +19,11 @@ final class MovieQuizViewController: UIViewController {
             guard let self = self else {return}
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            let firstQuestion = self.questions[self.currentQuestionIndex]
-            let viewModel = self.convert(model: firstQuestion)
-            self.show(quiz: viewModel)
+            if let firstQuestion = self.questionFactory.requestNextQuestion() {
+                self.currentQuestion = firstQuestion
+                let viewModel = self.convert(model: firstQuestion)
+                self.show(quiz: viewModel)
+            }
             
         }
 
@@ -52,10 +44,12 @@ final class MovieQuizViewController: UIViewController {
     }
 
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(),
-                                 question: model.question,
-                                 questionNumber: "\(currentQuestionIndex + 1)/\(questions.count) ")
+        return QuizStepViewModel(
+                                image: UIImage(named: model.image) ?? UIImage(),
+                                question: model.question,
+                                questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount) ")
       }
+// MARK: - Possible mistake below
     
     private func showAnswerResult(isCorrect: Bool) {
 //            print("Jan, you've answered")
@@ -64,8 +58,10 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-//            currentQuestionIndex += 1
-        let _: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
+        if let nextQuestion = questionFactory.requestNextQuestion(){
+            currentQuestion = nextQuestion
+            let viewModel = convert(model: nextQuestion)
+        }
             imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
             imageView.layer.borderWidth = 8 // толщина рамки
             imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
@@ -78,52 +74,48 @@ final class MovieQuizViewController: UIViewController {
                 self.noButton.isEnabled = true
                 self.showNextQuestionOrResults()
         }
-//            showNextQuestionOrResults()
-//            show(quiz: viewModel)
     }
     
+// MARK: - Possible Mistake above
+    
     private func showNextQuestionOrResults(){
-        if currentQuestionIndex == questions.count - 1 {
-            let text = "Ваш результат: \(correctAnswers) из 10"
+        if currentQuestionIndex == questionsAmount - 1 {
+            let text = correctAnswers == questionsAmount ?
+            "Поздравляем, Вы ответили на 10 из 10!" :
+            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз"
                         let viewModel = QuizResultsViewModel(
                             title: "Этот раунд окончен!",
                             text: text,
                             buttonText: "Сыграть ещё раз")
                         show(quiz: viewModel)
-//            let viewModel: QuizResultsViewModel
-//            show(quiz: viewModel)
-//            let viewModel: QuizResultsViewModel = convert(model: questions[currentQuestionIndex])
-//            show(show: viewModel)
-//            show(show: ViewModel)
-//            print("Results")
         }
         else {
             currentQuestionIndex += 1
             imageView.layer.borderWidth = 0 // толщина рамки
 
-            let viewModel: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
-            show(quiz: viewModel)
+            if let nextQuestion = questionFactory.requestNextQuestion() {
+                currentQuestion = nextQuestion
+                let viewModel: QuizStepViewModel = convert(model: nextQuestion)
+                show(quiz: viewModel)
+            }
+                
         }
     }
     
     
     
     
-    
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        _ = questions[currentQuestionIndex]
-//        let convertedQuestion = convert(model: currentQuestion)
-//        show (show: QuizStepViewModel(image: convertedQuestion.image, question: convertedQuestion.question, questionNumber: convertedQuestion.questionNumber))
-//
-        
-        let viewModel: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
-        show(quiz: viewModel)
-//        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-//        imageView.layer.borderWidth = 1 // толщина рамки
-//        imageView.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
-//        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
+        if let firstQuestion = questionFactory.requestNextQuestion() {
+            currentQuestion = firstQuestion
+            let viewModel = convert(model: firstQuestion)
+            show(quiz: viewModel)
+        }
+
         
         
         
@@ -144,41 +136,28 @@ final class MovieQuizViewController: UIViewController {
         let questionNumber: String
     }
     
-    // Для состояния "Вопрос задан"
-    struct QuizStepViewModel {
-        let image:             UIImage
-        let question:          String
-        let questionNumber:    String
-    }
+
 
     // Для состояния "Результат квиза"
-    struct QuizResultsViewModel {
-        let title:             String
-        let text:              String
-        let buttonText:        String
-    }
+
 
     // Для состояния "Результат вопроса"
     struct QuestionResultViewModel {
         let result: Bool
     }
 
-    struct QuizQuestion {
-        let image:              String
-        let question:           String
-        let correctAnswer:      Bool
-    }
+
 
 
     @IBAction private func noButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
+        guard let currentQuestion = currentQuestion else {return}
         let answerGiven = false
 //        print("button yes pressed, counter = \(currentQuestionIndex), correct answers = \(correctAnswers)")
         showAnswerResult(isCorrect: answerGiven == currentQuestion.correctAnswer)
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
-        let currentQuestion = questions[currentQuestionIndex]
+        guard let currentQuestion = currentQuestion else {return}
         let answerGiven = true
 //        print("button yes pressed, counter = \(currentQuestionIndex), correct answers = \(correctAnswers)")
         if currentQuestion.correctAnswer == true {
