@@ -118,10 +118,10 @@ final class MovieQuizViewController: UIViewController {
         
         let viewModel: QuizStepViewModel = convert(model: questions[currentQuestionIndex])
         show(quiz: viewModel)
-        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-        imageView.layer.borderWidth = 1 // толщина рамки
-        imageView.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
-        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
+//        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
+//        imageView.layer.borderWidth = 1 // толщина рамки
+//        imageView.layer.borderColor = UIColor.white.cgColor // делаем рамку белой
+//        imageView.layer.cornerRadius = 6 // радиус скругления углов рамки
         
         
         
