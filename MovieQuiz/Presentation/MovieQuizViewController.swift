@@ -25,7 +25,8 @@ final class MovieQuizViewController: UIViewController {
                                       preferredStyle: .alert) // preferredStyle может быть .alert или .actionSheet
 
         // создаём для него кнопки с действиями
-        let action = UIAlertAction(title: "OK", style: .default) { _ in
+        let action = UIAlertAction(title: "OK", style: .default) {[weak self] _ in
+            guard let self = self else {return}
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
             let firstQuestion = self.questions[self.currentQuestionIndex]
@@ -69,9 +70,10 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.borderWidth = 8 // толщина рамки
             imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
             imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // запускаем задачу через 1 секунду
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // запускаем задачу через 1 секунду
             // код, который вы хотите вызвать через 1 секунду,
             // в нашем случае это просто функция
+                guard let self = self else {return}
                 self.yesButton.isEnabled = true
                 self.noButton.isEnabled = true
                 self.showNextQuestionOrResults()
