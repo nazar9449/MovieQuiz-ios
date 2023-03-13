@@ -7,6 +7,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
+    private var alertPresenter: AlertPresenter = AlertPresenter()
     
 // MARK: Private functions
     
@@ -58,6 +59,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
             imageView.layer.borderWidth = 8 // толщина рамки
             imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
+            yesButton.isEnabled = false
+            noButton.isEnabled = false
 //            imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
 //            questionFactory?.requestNextQuestion()
 
@@ -78,16 +81,27 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             let text = correctAnswers == questionsAmount ?
             "Поздравляем, Вы ответили на 10 из 10!" :
             "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз"
-                        let viewModel = QuizResultsViewModel(
-                            title: "Этот раунд окончен!",
-                            text: text,
-                            buttonText: "Сыграть ещё раз")
-                        imageView.layer.borderWidth = 0 // толщина рамки
-                        show(quiz: viewModel)
+            
+            let alertModel = AlertModel(title: "The round is finished", message: text, buttonText: "Play one more time") {[weak self] _ in
+                guard let self = self else {return}
+                
+                self.currentQuestionIndex = 0
+                self.correctAnswers = 0
+                self.questionFactory?.requestNextQuestion()
+            }
+            alertPresenter.showAlert(in: self, with: alertModel)
+//                        let viewModel = QuizResultsViewModel(
+//                            title: "Этот раунд окончен!",
+//                            text: text,
+//                            buttonText: "Сыграть ещё раз")
+//                        imageView.layer.borderWidth = 0 // толщина рамки
+//                        show(quiz: viewModel)
+            
+            
         }
         else {
             currentQuestionIndex += 1
-            self.questionFactory?.requestNextQuestion()
+            questionFactory?.requestNextQuestion()
             imageView.layer.borderWidth = 0 // толщина рамки
         }
     }
