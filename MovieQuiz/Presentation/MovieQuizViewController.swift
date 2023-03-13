@@ -8,6 +8,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     
+// MARK: Private functions
+    
     private func show(quiz result: QuizResultsViewModel) {
         // создаём объекты всплывающего окна
         let alert = UIAlertController(title: result.title, // заголовок всплывающего окна
@@ -53,11 +55,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if isCorrect {
             correctAnswers += 1
         }
-            questionFactory?.requestNextQuestion()
             imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
             imageView.layer.borderWidth = 8 // толщина рамки
             imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
-            imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
+//            imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
+//            questionFactory?.requestNextQuestion()
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // запускаем задачу через 1 секунду
             // код, который вы хотите вызвать через 1 секунду,
             // в нашем случае это просто функция
@@ -84,10 +87,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         else {
             currentQuestionIndex += 1
+            self.questionFactory?.requestNextQuestion()
             imageView.layer.borderWidth = 0 // толщина рамки
-
-            questionFactory?.requestNextQuestion()
-                
         }
     }
     
@@ -99,11 +100,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         imageView.layer.cornerRadius = 20
-        
         questionFactory = QuestionFactory(delegate: self)
-        
         questionFactory?.requestNextQuestion()
 
         yesButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
@@ -112,7 +110,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
     }
     
-    //MARK: QuestionFactoryDelegate
+    // MARK: - QuestionFactoryDelegate
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
@@ -124,7 +122,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
-        show(quiz: viewModel)
+//        show(quiz: viewModel)
     }
     
     struct ViewModel {
@@ -142,18 +140,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBAction private func noButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {return}
         let answerGiven = false
-//        print("button yes pressed, counter = \(currentQuestionIndex), correct answers = \(correctAnswers)")
         showAnswerResult(isCorrect: answerGiven == currentQuestion.correctAnswer)
     }
     
     @IBAction private func yesButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {return}
         let answerGiven = true
-//        print("button yes pressed, counter = \(currentQuestionIndex), correct answers = \(correctAnswers)")
-        if currentQuestion.correctAnswer == true {
-            
-//            print("you answered right. your correctAnswered counter is now \(correctAnswers)")
-        }
         showAnswerResult(isCorrect: answerGiven == currentQuestion.correctAnswer)
     }
     
