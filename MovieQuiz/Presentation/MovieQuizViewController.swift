@@ -1,9 +1,9 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
-    
+final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
+    private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -19,11 +19,7 @@ final class MovieQuizViewController: UIViewController {
             guard let self = self else {return}
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            if let firstQuestion = self.questionFactory.requestNextQuestion() {
-                self.currentQuestion = firstQuestion
-                let viewModel = self.convert(model: firstQuestion)
-                self.show(quiz: viewModel)
-            }
+            self.questionFactory?.requestNextQuestion()
             
         }
 
@@ -57,10 +53,7 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
-        if let nextQuestion = questionFactory.requestNextQuestion(){
-            currentQuestion = nextQuestion
-            let viewModel = convert(model: nextQuestion)
-        }
+            questionFactory?.requestNextQuestion()
             imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
             imageView.layer.borderWidth = 8 // толщина рамки
             imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
@@ -86,19 +79,14 @@ final class MovieQuizViewController: UIViewController {
                             title: "Этот раунд окончен!",
                             text: text,
                             buttonText: "Сыграть ещё раз")
-            imageView.layer.borderWidth = 0 // толщина рамки
-
+                        imageView.layer.borderWidth = 0 // толщина рамки
                         show(quiz: viewModel)
         }
         else {
             currentQuestionIndex += 1
             imageView.layer.borderWidth = 0 // толщина рамки
 
-            if let nextQuestion = questionFactory.requestNextQuestion() {
-                currentQuestion = nextQuestion
-                let viewModel: QuizStepViewModel = convert(model: nextQuestion)
-                show(quiz: viewModel)
-            }
+            questionFactory?.requestNextQuestion()
                 
         }
     }
@@ -111,44 +99,45 @@ final class MovieQuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let firstQuestion = questionFactory.requestNextQuestion() {
-            currentQuestion = firstQuestion
-            let viewModel = convert(model: firstQuestion)
-            show(quiz: viewModel)
-        }
+        
+        imageView.layer.cornerRadius = 20
+        
+        questionFactory = QuestionFactory(delegate: self)
+        
+        questionFactory?.requestNextQuestion()
 
-        
-        
-        
-//        myNewLabel.text = "Nazik"
-//        myNewLabel.font = UIFont(name:"YSDisplay-Medium", size:20)
-        textLabel.font = UIFont(name:"YSDisplay-Bold", size:23)
-//        buttonYes.layer.cornerRadius = 15
-//        buttonYes.backgroundColor = .blue
         yesButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
         noButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
         questionTitle.font = UIFont(name: "YSDisplay-Medium", size: 20)
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
     }
-
+    
+    //MARK: QuestionFactoryDelegate
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.show(quiz: viewModel)
+        }
+        show(quiz: viewModel)
+    }
+    
     struct ViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
-    
-
-
     // Для состояния "Результат квиза"
-
 
     // Для состояния "Результат вопроса"
     struct QuestionResultViewModel {
         let result: Bool
     }
-
-
-
 
     @IBAction private func noButtonClicked(_ sender: Any) {
         guard let currentQuestion = currentQuestion else {return}
