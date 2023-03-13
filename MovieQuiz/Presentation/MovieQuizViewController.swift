@@ -3,7 +3,7 @@ import UIKit
 final class MovieQuizViewController: UIViewController {
     
     private let questionsAmount: Int = 10
-    private let questionFactory: QuestionFactory = QuestionFactory()
+    private let questionFactory: QuestionFactoryProtocol = QuestionFactory()
     private var currentQuestion: QuizQuestion?
     private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
@@ -52,7 +52,6 @@ final class MovieQuizViewController: UIViewController {
 // MARK: - Possible mistake below
     
     private func showAnswerResult(isCorrect: Bool) {
-//            print("Jan, you've answered")
         yesButton.isEnabled = false
         noButton.isEnabled = false
         if isCorrect {
@@ -87,6 +86,8 @@ final class MovieQuizViewController: UIViewController {
                             title: "Этот раунд окончен!",
                             text: text,
                             buttonText: "Сыграть ещё раз")
+            imageView.layer.borderWidth = 0 // толщина рамки
+
                         show(quiz: viewModel)
         }
         else {
@@ -180,65 +181,3 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var questionTitle: UILabel!
     
 }
-
-/*
- Mock-данные
- Картинка: The Godfather
- Настоящий рейтинг: 9,2
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Dark Knight
- Настоящий рейтинг: 9
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Kill Bill
- Настоящий рейтинг: 8,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Avengers
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Deadpool
- Настоящий рейтинг: 8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: The Green Knight
- Настоящий рейтинг: 6,6
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: ДА
-
-
- Картинка: Old
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: The Ice Age Adventures of Buck Wild
- Настоящий рейтинг: 4,3
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Tesla
- Настоящий рейтинг: 5,1
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
-
-
- Картинка: Vivarium
- Настоящий рейтинг: 5,8
- Вопрос: Рейтинг этого фильма больше чем 6?
- Ответ: НЕТ
- */
