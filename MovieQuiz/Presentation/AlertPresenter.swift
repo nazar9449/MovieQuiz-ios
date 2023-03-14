@@ -10,14 +10,15 @@ import UIKit
 
 class AlertPresenter {
     
-    func showAlert (in vc: UIViewController, with model: AlertModel) {
-        let alert = UIAlertController(title: model.title,
-                                      message: model.message,
+    func present(alert: AlertModel, presentingViewController: UIViewController) {
+        let alertController = UIAlertController(title: alert.title,
+                                      message: alert.message,
                                       preferredStyle: .alert)
         
-        let action = UIAlertAction(title: model.buttonText, style: .default, handler: model.completion)
+        let action = UIAlertAction(title: alert.buttonText, style: .default, handler: alert.completion)
         
-        alert.addAction(action)
-        vc.present(alert, animated: true, completion: nil)
+        alertController.addAction(action)
+        alertController.preferredAction = action
+        presentingViewController.present(alertController, animated: true, completion: nil)
     }
 }
