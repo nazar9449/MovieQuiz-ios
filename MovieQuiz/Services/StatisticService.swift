@@ -8,31 +8,31 @@
 import Foundation
 
 protocol StatisticService {
-    var totalAccuracy: Double   { get }
-    var gamesCount: Int         { get set }
-    var bestGame: GameRecord    { get  set }
     
     func store(correct count: Int, total amount: Int)
+
+    var totalAccuracy: Double   { get }
+    var gamesCount: Int         { get }
+    var bestGame: GameRecord    { get  set }
+    
 
 }
 
 final class StatisticServiceImplementation: StatisticService {
-    private var date = Date()
-    
     private let userDefaults = UserDefaults.standard
-    
+    private var date = Date()
     private enum Keys: String {
         case correct, total, bestGame, gamesCount
     }
-    
+
     private var correct: Int {
         return userDefaults.integer(forKey: Keys.correct.rawValue)
     }
-    
+
     private var total: Int {
         return userDefaults.integer(forKey: Keys.total.rawValue)
     }
-    
+
     var totalAccuracy: Double {
         get {
             let correctCount = Double(userDefaults.integer(forKey: Keys.correct.rawValue))
@@ -40,8 +40,8 @@ final class StatisticServiceImplementation: StatisticService {
             return 100 * (correctCount / total)
         }
     }
-    
-    internal var gamesCount: Int {
+
+    private(set) var gamesCount: Int {
         get {
             let count = userDefaults.integer(forKey: Keys.gamesCount.rawValue)
             return count
@@ -50,7 +50,7 @@ final class StatisticServiceImplementation: StatisticService {
             return userDefaults.set(newValue, forKey: Keys.gamesCount.rawValue)
         }
     }
-    
+
     var bestGame: GameRecord {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
@@ -66,10 +66,10 @@ final class StatisticServiceImplementation: StatisticService {
                 return
             }
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
-            
+
         }
     }
-    
+//
     func store(correct count: Int, total amount: Int) {
         gamesCount += 1
         userDefaults.set(self.total + amount, forKey: Keys.total.rawValue)
