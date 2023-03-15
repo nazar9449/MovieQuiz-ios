@@ -6,8 +6,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
-    @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var questionTitle: UILabel!
     
 //MARK: - Private variables and constants
@@ -56,8 +56,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
             yesButton.isEnabled = false
             noButton.isEnabled = false
-//            imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
-//            questionFactory?.requestNextQuestion()
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // запускаем задачу через 1 секунду
             // код, который вы хотите вызвать через 1 секунду,
@@ -75,18 +73,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if currentQuestionIndex == questionsAmount - 1 {
             guard let statisticService = statisticService else { return }
             statisticService.store(correct: correctAnswers, total: questionsAmount)
-//            let totalAccuracyPercentage = (String(format: "%.2f", statisticService.totalAccuracy) + "%")
             let bestGameDate = statisticService.bestGame.date.dateTimeString
             let totalGamesCount = statisticService.gamesCount
             let currentCorrectRecord = statisticService.bestGame.correct
             let currentTotalRecord = statisticService.bestGame.total
             let totalAccuracy = statisticService.totalAccuracy
 
-            
-//            let text = correctAnswers == questionsAmount ?
-//            "Поздравляем, Вы ответили на 10 из 10!" :
-//            "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз"
-            
             let alertModel = AlertModel(title: "Этот раунд окончен!",
                                         message: """
 Ваш результат: \(correctAnswers)/\(questionsAmount)

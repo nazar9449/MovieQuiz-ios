@@ -69,7 +69,7 @@ final class StatisticServiceImplementation: StatisticService {
 
         }
     }
-//
+
     func store(correct count: Int, total amount: Int) {
         gamesCount += 1
         userDefaults.set(self.total + amount, forKey: Keys.total.rawValue)
