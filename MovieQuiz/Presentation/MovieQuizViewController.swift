@@ -75,11 +75,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         if currentQuestionIndex == questionsAmount - 1 {
             guard let statisticService = statisticService else { return }
             statisticService.store(correct: correctAnswers, total: questionsAmount)
-            let totalAccuracyPercentage = (String(format: "%.2f", statisticService.totalAccuracy) + "%")
+//            let totalAccuracyPercentage = (String(format: "%.2f", statisticService.totalAccuracy) + "%")
             let bestGameDate = statisticService.bestGame.date.dateTimeString
             let totalGamesCount = statisticService.gamesCount
             let currentCorrectRecord = statisticService.bestGame.correct
             let currentTotalRecord = statisticService.bestGame.total
+            let totalAccuracy = statisticService.totalAccuracy
+
             
 //            let text = correctAnswers == questionsAmount ?
 //            "Поздравляем, Вы ответили на 10 из 10!" :
@@ -90,7 +92,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 Ваш результат: \(correctAnswers)/\(questionsAmount)
 Количество сыгранных квизов: \(totalGamesCount)
 Рекорд: \(currentCorrectRecord)/ \(currentTotalRecord) (\(bestGameDate)
-Средняя точность: \(String(format: "%.2f", totalAccuracyPercentage))%
+Средняя точность: \(String(format: "%.2f", totalAccuracy))%
 """,
                                         buttonText: "Сыграть ещё раз",
                                         completion: {[weak self] _ in
