@@ -8,9 +8,9 @@
 import Foundation
 
 struct QuizQuestion {
-    let image:              String
-    let question:           String
-    let correctAnswer:      Bool
+    let image: String
+    let question: String
+    let correctAnswer: Bool
 }
 
 
