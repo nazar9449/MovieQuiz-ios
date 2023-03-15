@@ -104,8 +104,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         } else {
             currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
-            imageView.layer.borderWidth = 0 // толщина рамки
         }
+        imageView.layer.borderWidth = 0 // толщина рамки
+
     }
     
     
