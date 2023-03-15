@@ -106,6 +106,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     
     // MARK: - Lifecycle
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

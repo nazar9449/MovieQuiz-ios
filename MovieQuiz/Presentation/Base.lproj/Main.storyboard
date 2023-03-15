@@ -104,7 +104,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="YP Black"/>
                         <constraints>
                             <constraint firstItem="vuS-wl-18B" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="f1N-AV-z0b"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vuS-wl-18B" secondAttribute="trailing" constant="20" id="q53-PH-flT"/>
