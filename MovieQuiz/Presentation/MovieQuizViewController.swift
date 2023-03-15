@@ -108,6 +108,30 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         activityIndicator.startAnimating() //starting the animation
     }
     
+    private func hideLoadingIndicator() {
+        activityIndicator.isHidden = true // in the future one func could be used to toggle the status of the activity indicator
+    }
+    
+    private func showNetworkError(message: String) {
+        hideLoadingIndicator() // hiding loading indicator
+        let alertModel = AlertModel(title: "Этот раунд окончен!",
+                                    message: message,
+                                    buttonText: "Сыграть ещё раз",
+                                    completion: {[weak self] _ in
+            guard let self = self else {return}
+            
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            self.questionFactory?.requestNextQuestion()
+            
+            
+        })
+        imageView.layer.borderWidth = 0 // толщина рамки
+        
+        alertPresenter?.present(alert: alertModel, presentingViewController: self)
+
+        
+    }
     
     
     // MARK: - Lifecycle
