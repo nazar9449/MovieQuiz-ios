@@ -35,15 +35,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             question: model.question,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount) ")
     }
+    
     // MARK: Possible mistake in the function below
-    
-    private func restartGame() {
-        currentQuestionIndex = 0
-        correctAnswers = 0
-        questionFactory?.requestNextQuestion()
-    }
-    
-    
     
     private func showAnswerResult(isCorrect: Bool) {
         yesButton.isEnabled = false
@@ -130,6 +123,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         noButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
         questionTitle.font = UIFont(name: "YSDisplay-Medium", size: 20)
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
+        textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
+
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -173,7 +168,4 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let answerGiven = true
         showAnswerResult(isCorrect: answerGiven == currentQuestion.correctAnswer)
     }
-    
-    
-    
 }
