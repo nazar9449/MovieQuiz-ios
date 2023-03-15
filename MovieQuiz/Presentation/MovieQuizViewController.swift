@@ -9,8 +9,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var questionTitle: UILabel!
-    
-//MARK: - Private variables and constants
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    //MARK: - Private variables and constants
     private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
@@ -20,6 +20,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var statisticService: StatisticService?
     
 // MARK: Private functions
+    
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // unhide
+        activityIndicator.startAnimating() // start
+    }
 
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -122,6 +127,15 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let url = URL(string: "https://imdb-api.com/en/API/Top250Movies/k_nczip2zt") else { return }
+        var request = URLRequest(url: url) //создаём запрос
+        
+        request.httpBody = Data() //
+        request.httpMethod = "POST"
+        request.setValue("test", forHTTPHeaderField: "Test")
+         
+        let session = URLSession.shared
+        
         alertPresenter = AlertPresenter()
         statisticService = StatisticServiceImplementation()
         questionFactory = QuestionFactory(delegate: self)
