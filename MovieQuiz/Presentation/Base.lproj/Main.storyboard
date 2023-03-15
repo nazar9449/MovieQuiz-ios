@@ -102,16 +102,22 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="V5r-UW-tIt">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
+                            <constraint firstItem="V5r-UW-tIt" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="EpL-3p-8IA"/>
+                            <constraint firstItem="V5r-UW-tIt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="elI-Cm-xBB"/>
                             <constraint firstItem="vuS-wl-18B" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="f1N-AV-z0b"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vuS-wl-18B" secondAttribute="trailing" constant="20" id="q53-PH-flT"/>
                             <constraint firstItem="vuS-wl-18B" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="wHp-gv-cJe"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="elI-Cm-xBB" id="W5e-Gh-z6b"/>
                         <outlet property="counterLabel" destination="fiA-0D-IFF" id="9eF-M5-AHH"/>
                         <outlet property="imageView" destination="Mdn-ST-Sba" id="zgS-D6-bxn"/>
                         <outlet property="noButton" destination="eKT-vc-OS5" id="Go0-W8-JvH"/>

@@ -9,6 +9,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var questionTitle: UILabel!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - Private variables and constants
     private let questionsAmount: Int = 10
@@ -102,6 +103,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
     }
     
+    private func showLoadingIndicator() {
+        activityIndicator.isHidden = false // turning on the indicator
+        activityIndicator.startAnimating() //starting the animation
+    }
     
     
     
