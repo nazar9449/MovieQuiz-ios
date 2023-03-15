@@ -117,7 +117,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="activityIndicator" destination="elI-Cm-xBB" id="W5e-Gh-z6b"/>
+                        <outlet property="activityIndicator" destination="V5r-UW-tIt" id="usv-A9-92s"/>
                         <outlet property="counterLabel" destination="fiA-0D-IFF" id="9eF-M5-AHH"/>
                         <outlet property="imageView" destination="Mdn-ST-Sba" id="zgS-D6-bxn"/>
                         <outlet property="noButton" destination="eKT-vc-OS5" id="Go0-W8-JvH"/>

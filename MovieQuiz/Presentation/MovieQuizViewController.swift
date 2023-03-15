@@ -9,7 +9,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var questionTitle: UILabel!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - Private variables and constants
     private let questionsAmount: Int = 10
@@ -32,7 +32,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.question,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount) ")
     }
@@ -113,16 +113,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showNetworkError(message: String) {
-        hideLoadingIndicator() // hiding loading indicator
-        let alertModel = AlertModel(title: "Этот раунд окончен!",
+//        hideLoadingIndicator() // hiding loading indicator
+        let alertModel = AlertModel(title: "Ошибка",
                                     message: message,
-                                    buttonText: "Сыграть ещё раз",
+                                    buttonText: "Попробовать ещё раз",
                                     completion: {[weak self] _ in
             guard let self = self else {return}
             
             self.currentQuestionIndex = 0
             self.correctAnswers = 0
-            self.questionFactory?.requestNextQuestion()
+            self.questionFactory?.loadData()
             
             
         })
@@ -143,13 +143,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         super.viewDidLoad()
         alertPresenter = AlertPresenter()
         statisticService = StatisticServiceImplementation()
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+        showLoadingIndicator()
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
         
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
-        questionFactory = QuestionFactory(delegate: self)
-        questionFactory?.requestNextQuestion()
+//        questionFactory = QuestionFactory(delegate: self)
+//        questionFactory?.requestNextQuestion()
+        
+        
+        
         
         yesButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
         noButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
@@ -160,6 +164,16 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - QuestionFactoryDelegate
+    
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true // hiding loading indicator
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        showNetworkError(message: error.localizedDescription) // let's take description as the message
+
+    }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
         guard let question = question else {
