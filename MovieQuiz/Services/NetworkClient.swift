@@ -4,11 +4,11 @@ protocol NetworkRouting {
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void)
 }
 
-struct NetworkClient {
-    
-    private enum NetworkError: Error {
-        case codeError
-    }
+private enum NetworkError: Error {
+    case codeError
+}
+
+struct NetworkClient: NetworkRouting {
     
     func fetch(url: URL, handler: @escaping (Result<Data, Error>) -> Void) {
         let request = URLRequest(url: url)
