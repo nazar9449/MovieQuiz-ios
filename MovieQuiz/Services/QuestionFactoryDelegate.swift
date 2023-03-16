@@ -1,12 +1,7 @@
-//
-//  QuestionFactoryDelegate.swift
-//  MovieQuiz
-//
-//  Created by assistant on 13.03.2023.
-//
-
 import Foundation
 
 protocol QuestionFactoryDelegate: AnyObject {
     func didReceiveNextQuestion(question: QuizQuestion?)
+    func didLoadDataFromServer() // message for successful loading
+    func didFailToLoadData(with error: Error) //message of loading error
 }
