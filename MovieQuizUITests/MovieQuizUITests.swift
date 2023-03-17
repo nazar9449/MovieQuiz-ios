@@ -1,15 +1,15 @@
-//
-//  MovieQuizUITests.swift
-//  MovieQuizUITests
-//
-//  Created by assistant on 17.03.2023.
-//
-
 import XCTest
 
 final class MovieQuizUITests: XCTestCase {
+    
+    var app: XCUIApplication!
 
     override func setUpWithError() throws {
+        
+        try super.setUpWithError()
+        
+        app = XCUIApplication()
+        app.launch()
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
@@ -19,7 +19,15 @@ final class MovieQuizUITests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        
+        app.terminate()
+        app = nil
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+    
+    func testScreenCast() throws {
+        
     }
 
     func testExample() throws {
