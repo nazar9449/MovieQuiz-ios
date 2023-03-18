@@ -12,10 +12,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - Private variables and constants
-    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
-    private var currentQuestionIndex: Int = 0
     private var correctAnswers: Int = 0
     private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
@@ -65,9 +63,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: Possible mistake in the function above
     
     private func showNextQuestionOrResults(){
-        if currentQuestionIndex == questionsAmount - 1 {
+        if presenter.isLastQuestion() {
             guard let statisticService = statisticService else { return }
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
             let bestGameDate = statisticService.bestGame.date.dateTimeString
             let totalGamesCount = statisticService.gamesCount
             let currentCorrectRecord = statisticService.bestGame.correct
@@ -76,7 +74,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             
             let alertModel = AlertModel(title: "Этот раунд окончен!",
                                         message: """
-Ваш результат: \(correctAnswers)/\(questionsAmount)
+Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)
 Количество сыгранных квизов: \(totalGamesCount)
 Рекорд: \(currentCorrectRecord)/ \(currentTotalRecord) (\(bestGameDate)
 Средняя точность: \(String(format: "%.2f", totalAccuracy))%
@@ -85,7 +83,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                         completion: {[weak self] _ in
                 guard let self = self else {return}
                 
-                self.currentQuestionIndex = 0
+                self.presenter.resetQuestionIndex()
                 self.correctAnswers = 0
                 self.questionFactory?.requestNextQuestion()
                 
@@ -97,7 +95,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             )
             
         } else {
-            presenter.currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             questionFactory?.requestNextQuestion()
         }
         imageView.layer.borderWidth = 0 // толщина рамки
@@ -121,7 +119,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                     completion: {[weak self] _ in
             guard let self = self else {return}
             
-            self.currentQuestionIndex = 0
+            self.presenter.resetQuestionIndex()
             self.correctAnswers = 0
             self.questionFactory?.loadData()
             
