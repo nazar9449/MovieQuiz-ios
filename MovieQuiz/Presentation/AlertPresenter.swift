@@ -7,6 +7,7 @@ class AlertPresenter {
         let alertController = UIAlertController(title: alert.title,
                                       message: alert.message,
                                       preferredStyle: .alert)
+        alertController.view.accessibilityIdentifier = "Game results"
         
         let action = UIAlertAction(title: alert.buttonText, style: .default, handler: alert.completion)
         

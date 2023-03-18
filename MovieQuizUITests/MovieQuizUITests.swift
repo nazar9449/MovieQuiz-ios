@@ -1,4 +1,6 @@
 import XCTest
+@testable import MovieQuiz // importing app for testing
+
 
 final class MovieQuizUITests: XCTestCase {
     
@@ -26,24 +28,81 @@ final class MovieQuizUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
-    func testScreenCast() throws {
+    func testYesButton() {
+        sleep(3)
         
+        let firstPoster = app.images["Poster"] // finding the first poster
+        let firstPosterData = firstPoster.screenshot().pngRepresentation
+        let indexLabel = app.staticTexts["Index"]
+        
+        let index1 = indexLabel.label
+
+        
+        app.buttons["Yes"].tap() // finding the "Yes" button and tapping it
+        sleep(3)
+        
+        let secondPoster = app.images["Poster"] // finding the poster one more time
+        let secondPosterData = secondPoster.screenshot().pngRepresentation
+        let index2 = indexLabel.label
+
+        
+        XCTAssertFalse(firstPosterData == secondPosterData) //comparing two screenshots
+        XCTAssertFalse(index1 == index2)
+        XCTAssertEqual(index2, "2/10 ")
     }
+    
+    func testNoButton() {
+        sleep(3)
+        
+        let firstPoster = app.images["Poster"] // finding the first poster
+        let firstPosterData = firstPoster.screenshot().pngRepresentation
+        let indexLabel = app.staticTexts["Index"]
+        
+        let index1 = indexLabel.label
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
+        
+        app.buttons["No"].tap() // finding the "Yes" button and tapping it
+        sleep(3)
+        
+        let secondPoster = app.images["Poster"] // finding the poster one more time
+        let secondPosterData = secondPoster.screenshot().pngRepresentation
+        let index2 = indexLabel.label
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        XCTAssertFalse(firstPosterData == secondPosterData) //comparing two screenshots
+        XCTAssertFalse(index1 == index2)
+        XCTAssertEqual(index2, "2/10 ")
     }
-
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
+    
+    func testGameFinish() {
+        sleep(2)
+        for _ in 1...10 {
+            app.buttons["No"].tap()
+            sleep(2)
         }
+
+        let alert = app.alerts["Game results"]
+        
+        XCTAssertTrue(alert.exists)
+        XCTAssertTrue(alert.label == "Этот раунд окончен!")
+        XCTAssertTrue(alert.buttons.firstMatch.label == "Сыграть ещё раз")
+    }
+    
+    func testAlertDismiss() {
+        sleep(2)
+        for _ in 1...10 {
+            app.buttons["No"].tap()
+            sleep(2)
+        }
+        
+        let alert = app.alerts["Game results"]
+        alert.buttons.firstMatch.tap()
+        
+        sleep(2)
+        
+        let indexLabel = app.staticTexts["Index"]
+        
+        XCTAssertFalse(alert.exists)
+        XCTAssertTrue(indexLabel.label == "1/10 ")
     }
 }
