@@ -20,6 +20,7 @@
 		7251524D29BF047F002FB378 /* QuestionFactoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251524C29BF047F002FB378 /* QuestionFactoryDelegate.swift */; };
 		7251524F29BF1ADE002FB378 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251524E29BF1ADE002FB378 /* AlertModel.swift */; };
 		7251525129BF1D5B002FB378 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251525029BF1D5B002FB378 /* AlertPresenter.swift */; };
+		7288CDCF29C659EB00A2A632 /* MovieQuizPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7288CDCE29C659EB00A2A632 /* MovieQuizPresenter.swift */; };
 		72F12FB029B054440097E1DC /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 72F12FAE29B054440097E1DC /* YS Display-Medium.ttf */; };
 		72F12FB129B054440097E1DC /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 72F12FAF29B054440097E1DC /* YS Display-Bold.ttf */; };
 		72FF111429BFC1FE00C321AA /* GameRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72FF111329BFC1FD00C321AA /* GameRecord.swift */; };
@@ -68,6 +69,7 @@
 		7251524C29BF047F002FB378 /* QuestionFactoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionFactoryDelegate.swift; sourceTree = "<group>"; };
 		7251524E29BF1ADE002FB378 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		7251525029BF1D5B002FB378 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
+		7288CDCE29C659EB00A2A632 /* MovieQuizPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenter.swift; sourceTree = "<group>"; };
 		72F12FAE29B054440097E1DC /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		72F12FAF29B054440097E1DC /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		72FF111329BFC1FD00C321AA /* GameRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRecord.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				AD1ABAB52831907B00B3E448 /* MovieQuizViewController.swift */,
 				AD1ABAB72831907B00B3E448 /* Main.storyboard */,
 				7251525029BF1D5B002FB378 /* AlertPresenter.swift */,
+				7288CDCE29C659EB00A2A632 /* MovieQuizPresenter.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7288CDCF29C659EB00A2A632 /* MovieQuizPresenter.swift in Sources */,
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				7251525129BF1D5B002FB378 /* AlertPresenter.swift in Sources */,
 				7251524F29BF1ADE002FB378 /* AlertModel.swift in Sources */,

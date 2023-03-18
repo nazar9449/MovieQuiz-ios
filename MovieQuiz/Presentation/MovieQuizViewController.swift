@@ -19,6 +19,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var correctAnswers: Int = 0
     private var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
+    private let presenter = MovieQuizPresenter()
     
     // MARK: Private functions
     
@@ -30,12 +31,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         noButton.isEnabled = true
     }
     
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.question,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount) ")
-    }
+//    private func convert(model: QuizQuestion) -> QuizStepViewModel {
+//        return QuizStepViewModel(
+//            image: UIImage(data: model.image) ?? UIImage(),
+//            question: model.question,
+//            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount) ")
+//    }
     
     // MARK: Possible mistake in the function below
     
@@ -96,7 +97,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             )
             
         } else {
-            currentQuestionIndex += 1
+            presenter.currentQuestionIndex += 1
             questionFactory?.requestNextQuestion()
         }
         imageView.layer.borderWidth = 0 // толщина рамки
@@ -181,7 +182,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         }
         
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async { [weak self] in
             self?.show(quiz: viewModel)
         }
