@@ -15,7 +15,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var questionFactory: QuestionFactoryProtocol?
 //    private var currentQuestion: QuizQuestion?
     private var correctAnswers: Int = 0
-    private var alertPresenter: AlertPresenter?
+    var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
     private let presenter = MovieQuizPresenter()
     
@@ -37,6 +37,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     func buttonsOff() {
         noButton.isEnabled = false
         yesButton.isEnabled = false
+    }
+    
+    func hideBorderOfImage() {
+        imageView.layer.borderWidth = 0 // толщина рамки
     }
     
     // MARK: Possible mistake in the function below
@@ -149,21 +153,21 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 20
-//        questionFactory = QuestionFactory(delegate: self)
-//        questionFactory?.requestNextQuestion()
-        
-        
-        
-        
+
+        setFontsOfButtonAndLabels()
+
+
+    }
+    
+    // MARK: - QuestionFactoryDelegate
+    
+    private func setFontsOfButtonAndLabels () {
         yesButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
         noButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
         questionTitle.font = UIFont(name: "YSDisplay-Medium", size: 20)
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
-
     }
-    
-    // MARK: - QuestionFactoryDelegate
     
     func didLoadDataFromServer() {
         activityIndicator.isHidden = true // hiding loading indicator
