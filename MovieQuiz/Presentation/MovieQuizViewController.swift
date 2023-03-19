@@ -29,33 +29,32 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         noButton.isEnabled = true
     }
     
-//    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-//        return QuizStepViewModel(
-//            image: UIImage(data: model.image) ?? UIImage(),
-//            question: model.question,
-//            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount) ")
-//    }
+    func buttonsOn() {
+        noButton.isEnabled = true
+        yesButton.isEnabled = true
+    }
+    
+    func buttonsOff() {
+        noButton.isEnabled = false
+        yesButton.isEnabled = false
+    }
     
     // MARK: Possible mistake in the function below
     
     func showAnswerResult(isCorrect: Bool) {
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
+        buttonsOff()
         if isCorrect {
             correctAnswers += 1
         }
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
-        yesButton.isEnabled = false
-        noButton.isEnabled = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // запускаем задачу через 1 секунду
             // код, который вы хотите вызвать через 1 секунду,
             // в нашем случае это просто функция
             guard let self = self else {return}
-            self.yesButton.isEnabled = true
-            self.noButton.isEnabled = true
+            self.buttonsOn()
             self.showNextQuestionOrResults()
         }
     }
