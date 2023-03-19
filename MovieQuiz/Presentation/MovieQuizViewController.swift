@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
+final class MovieQuizViewController: UIViewController {
     
     // MARK: - IBOutlets
     @IBOutlet private weak var imageView: UIImageView!
@@ -12,12 +12,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: - Private variables and constants
-    private var questionFactory: QuestionFactoryProtocol?
-//    private var currentQuestion: QuizQuestion?
-//    private var correctAnswers: Int = 0
+//    private var questionFactory: QuestionFactoryProtocol? to be deleted
+//    private var currentQuestion: QuizQuestion?            to be deleted
+//    private var correctAnswers: Int = 0                   to be deleted
     var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
-    private let presenter = MovieQuizPresenter()
+    private var presenter: MovieQuizPresenter!
     
     // MARK: Private functions
     
@@ -25,8 +25,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.image = step.image
         textLabel.text = step.question
         counterLabel.text = step.questionNumber
-        yesButton.isEnabled = true
-        noButton.isEnabled = true
+        buttonsOn()
     }
     
     func buttonsOn() {
@@ -86,9 +85,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                         completion: {[weak self] _ in
                 guard let self = self else {return}
                 
-                self.presenter.restartGame()
-                self.questionFactory?.requestNextQuestion()
-                
+                self.presenter.restartGame()                
                 
             })
             imageView.layer.borderWidth = 0 // толщина рамки
@@ -98,22 +95,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             
         } else {
             presenter.switchToNextQuestion()
-            questionFactory?.requestNextQuestion()
+            presenter.questionFactory?.requestNextQuestion()
+//            to be deleted or removed?
         }
         imageView.layer.borderWidth = 0 // толщина рамки
         
     }
     
-    private func showLoadingIndicator() {
+
+    
+    func showLoadingIndicator() {
         activityIndicator.isHidden = false // turning on the indicator
         activityIndicator.startAnimating() //starting the animation
     }
     
-    private func hideLoadingIndicator() {
+    func hideLoadingIndicator() {
         activityIndicator.isHidden = true // in the future one func could be used to toggle the status of the activity indicator
     }
     
-    private func showNetworkError(message: String) {
+    func showNetworkError(message: String) {
 //        hideLoadingIndicator() // hiding loading indicator
         let alertModel = AlertModel(title: "Ошибка",
                                     message: message,
@@ -122,8 +122,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             guard let self = self else {return}
             
             self.presenter.restartGame()
-            self.questionFactory?.loadData()
-            
             
         })
         imageView.layer.borderWidth = 0 // толщина рамки
@@ -144,8 +142,10 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         alertPresenter = AlertPresenter()
         statisticService = StatisticServiceImplementation()
         showLoadingIndicator()
-        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
-        questionFactory?.loadData()
+//        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+//        questionFactory?.loadData()
+//        TO BE DELETED?
+        presenter = MovieQuizPresenter(viewController: self)
         
         presenter.viewController = self
         
@@ -157,7 +157,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
 
     }
     
-    // MARK: - QuestionFactoryDelegate
     
     private func setFontsOfButtonAndLabels () {
         yesButton.titleLabel?.font = UIFont(name:"YSDisplay-Medium", size: 20)
@@ -167,19 +166,19 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
     }
     
-    func didLoadDataFromServer() {
-        activityIndicator.isHidden = true // hiding loading indicator
-        questionFactory?.requestNextQuestion()
-    }
+//    func didLoadDataFromServer() {
+//        activityIndicator.isHidden = true // hiding loading indicator
+//        questionFactory?.requestNextQuestion()
+//    } to be deleted
     
-    func didFailToLoadData(with error: Error) {
-        showNetworkError(message: error.localizedDescription) // let's take description as the message
-
-    }
+//    func didFailToLoadData(with error: Error) {
+//        showNetworkError(message: error.localizedDescription) // let's take description as the message
+//
+//    } to be deleted
     
-    func didReceiveNextQuestion(question: QuizQuestion?) {
-        presenter.didReceiveNextQuestion(question: question)
-    }
+//    func didReceiveNextQuestion(question: QuizQuestion?) {
+//        presenter.didReceiveNextQuestion(question: question)
+//    } to be deleted
     
     
     
