@@ -1,6 +1,6 @@
 import UIKit
 
-final class MovieQuizViewController: UIViewController {
+final class MovieQuizViewController: UIViewController, MovieQuizViewControllerProtocol {
     
     // MARK: - IBOutlets
     @IBOutlet private weak var imageView: UIImageView!
@@ -122,13 +122,6 @@ final class MovieQuizViewController: UIViewController {
         questionTitle.font = UIFont(name: "YSDisplay-Medium", size: 20)
         counterLabel.font = UIFont(name: "YSDisplay-Medium", size: 20)
         textLabel.font = UIFont(name: "YSDisplay-Bold", size: 23)
-    }
-    
-    // Для состояния "Результат квиза"
-    struct ViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
     }
     
     // Для состояния "Результат вопроса"

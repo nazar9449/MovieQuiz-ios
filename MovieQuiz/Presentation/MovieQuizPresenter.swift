@@ -10,8 +10,8 @@ final class MovieQuizPresenter: QuestionFactoryDelegate{
     var questionFactory: QuestionFactoryProtocol?
     var statisticService: StatisticService!
     
-    init(viewController: MovieQuizViewController) {
-        self.viewController = viewController
+    init(viewController: MovieQuizViewControllerProtocol) {
+        self.viewController = viewController as! MovieQuizViewController
         
         statisticService = StatisticServiceImplementation()
         
