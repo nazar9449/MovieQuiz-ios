@@ -14,7 +14,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     //MARK: - Private variables and constants
     private var questionFactory: QuestionFactoryProtocol?
 //    private var currentQuestion: QuizQuestion?
-    private var correctAnswers: Int = 0
+//    private var correctAnswers: Int = 0
     var alertPresenter: AlertPresenter?
     private var statisticService: StatisticService?
     private let presenter = MovieQuizPresenter()
@@ -45,14 +45,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: Possible mistake in the function below
     
-    func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrectAnswer: Bool) {
         buttonsOff()
-        if isCorrect {
-            correctAnswers += 1
+        if isCorrectAnswer {
+            presenter.didAnswer(isCorrectAnswer: true)
         }
-        imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
-        imageView.layer.borderWidth = 8 // толщина рамки
-        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
+            imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
+            imageView.layer.borderWidth = 8 // толщина рамки
+            imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // border is either red or green
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // запускаем задачу через 1 секунду
             // код, который вы хотите вызвать через 1 секунду,
@@ -68,7 +68,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private func showNextQuestionOrResults(){
         if presenter.isLastQuestion() {
             guard let statisticService = statisticService else { return }
-            statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
+            statisticService.store(correct: presenter.correctAnswers, total: presenter.questionsAmount)
             let bestGameDate = statisticService.bestGame.date.dateTimeString
             let totalGamesCount = statisticService.gamesCount
             let currentCorrectRecord = statisticService.bestGame.correct
@@ -77,7 +77,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             
             let alertModel = AlertModel(title: "Этот раунд окончен!",
                                         message: """
-Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)
+Ваш результат: \(presenter.correctAnswers)/\(presenter.questionsAmount)
 Количество сыгранных квизов: \(totalGamesCount)
 Рекорд: \(currentCorrectRecord)/ \(currentTotalRecord) (\(bestGameDate)
 Средняя точность: \(String(format: "%.2f", totalAccuracy))%
@@ -86,8 +86,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                         completion: {[weak self] _ in
                 guard let self = self else {return}
                 
-                self.presenter.resetQuestionIndex()
-                self.correctAnswers = 0
+                self.presenter.restartGame()
                 self.questionFactory?.requestNextQuestion()
                 
                 
@@ -122,8 +121,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                                     completion: {[weak self] _ in
             guard let self = self else {return}
             
-            self.presenter.resetQuestionIndex()
-            self.correctAnswers = 0
+            self.presenter.restartGame()
             self.questionFactory?.loadData()
             
             
